@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.luciano.os.domain.Tecnico;
 import com.luciano.os.dtos.TecnicoDTO;
 import com.luciano.os.services.TecnicoService;
 
@@ -23,5 +22,5 @@ public class TecnicoResource {
 	    TecnicoDTO objDTO = new TecnicoDTO(service.findById(id));
 		return ResponseEntity.ok().body(objDTO);
 	}
-
+ 
 }
