@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import com.luciano.os.domain.Tecnico;
 import com.luciano.os.dtos.TecnicoDTO;
 import com.luciano.os.repositories.TecnicoRepository;
+import com.luciano.os.services.exception.DataIntegratyViolationException;
 import com.luciano.os.services.exception.ObjectNotFoundException;
 
 @Service
 public class TecnicoService {
-	
+
 	@Autowired
 	private TecnicoRepository repository;
 
@@ -26,9 +27,21 @@ public class TecnicoService {
 	public List<Tecnico> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Tecnico create(TecnicoDTO objDTO) {
+		if (findByCPF(objDTO) != null) {
+			throw new DataIntegratyViolationException("CPF ja cadastrado na base de dados!");
+		}
+
 		return repository.save(new Tecnico(null, objDTO.getNome(), objDTO.getCpf(), objDTO.getTelefone()));
+	}
+
+	public Tecnico findByCPF(TecnicoDTO objDTO) {
+		Tecnico obj = repository.findByCPF(objDTO.getCpf());
+		if (obj != null) {
+			return obj;
+		}
+		return null;
 	}
 
 }
