@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.luciano.os.domain.Tecnico;
@@ -50,6 +51,12 @@ public class TecnicoService {
 		oldObj.setTelefone(objDTO.getTelefone());
 		return repository.save(oldObj);
 	}
+	
+	public void delete(Integer id) {
+		findById(id);
+		repository.deleteById(id);
+	}
+
 
 	public Tecnico findByCPF(TecnicoDTO objDTO) {
 		Tecnico obj = repository.findByCPF(objDTO.getCpf());
@@ -58,6 +65,7 @@ public class TecnicoService {
 		}
 		return null;
 	}
+
 
 
 }
