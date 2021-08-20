@@ -6,11 +6,12 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.luciano.os.domain.Pessoa;
 import com.luciano.os.domain.Tecnico;
 import com.luciano.os.dtos.TecnicoDTO;
+import com.luciano.os.repositories.PessoaRepository;
 import com.luciano.os.repositories.TecnicoRepository;
 import com.luciano.os.services.exception.DataIntegratyViolationException;
 import com.luciano.os.services.exception.ObjectNotFoundException;
@@ -20,6 +21,9 @@ public class TecnicoService {
 
 	@Autowired
 	private TecnicoRepository repository;
+	
+	@Autowired
+	private PessoaRepository pessoaRepository;
 
 	public Tecnico findById(Integer id) {
 		Optional<Tecnico> obj = repository.findById(id);
@@ -61,8 +65,8 @@ public class TecnicoService {
 	}
 
 
-	public Tecnico findByCPF(TecnicoDTO objDTO) {
-		Tecnico obj = repository.findByCPF(objDTO.getCpf());
+	public Pessoa findByCPF(TecnicoDTO objDTO) {
+		Pessoa obj = pessoaRepository.findByCPF(objDTO.getCpf());
 		if (obj != null) {
 			return obj;
 		}
