@@ -3,11 +3,17 @@ package com.luciano.os.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.luciano.os.domain.Cliente;
 import com.luciano.os.domain.OS;
 import com.luciano.os.domain.Tecnico;
+import com.luciano.os.domain.enuns.Prioridade;
+import com.luciano.os.domain.enuns.Status;
+import com.luciano.os.dtos.OsDTO;
 import com.luciano.os.repositories.OSRepository;
 import com.luciano.os.services.exception.ObjectNotFoundException;
 
@@ -16,6 +22,12 @@ public class OsService {
 	
 	@Autowired
 	private OSRepository repository;
+	
+	@Autowired
+	private TecnicoService tecnicoService;
+	
+	@Autowired
+	private ClienteService clienteService;
 	
 	public OS findById(Integer id) {
 		Optional<OS> obj = repository.findById(id);
@@ -27,4 +39,44 @@ public class OsService {
 		return repository.findAll();
 	}
 
+	public OS create(@Valid OsDTO obj) {
+		return fromDTO(obj);
+	}
+	
+	private OS fromDTO(OsDTO obj) {
+		OS newObj = new OS();
+		newObj.setId(obj.getId());
+		newObj.setObservacoes(obj.getObservacoes());
+		newObj.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
+		newObj.setStatus(Status.toEnum(obj.getStatus()));
+		
+		Tecnico tec = tecnicoService.findById(obj.getTecnico());
+		Cliente cli = clienteService.findById(obj.getCliente());
+		
+		newObj.setTecnico(tec);
+		newObj.setCliente(cli);
+		
+		return repository.save(newObj);
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
