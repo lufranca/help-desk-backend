@@ -51,6 +51,11 @@ public class OsService {
 		return repository.save(oldObj);
 	}
 	
+	public void delete(Integer id) {
+		OS obj = findById(id);
+		repository.delete(obj);
+	}
+	
 	private OS fromDTO(OsDTO obj) {
 		
 		Tecnico tec = tecnicoService.findById(obj.getTecnico());
@@ -75,6 +80,8 @@ public class OsService {
 		
 		return newObj;
 	}
+
+
 
 
 

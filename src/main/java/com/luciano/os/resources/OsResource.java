@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,11 +55,19 @@ public class OsResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<OsDTO> update(@PathVariable Integer id, @Valid @RequestBody OsDTO obj) {
 		obj = new OsDTO(service.update(id, obj));
-		return ResponseEntity.ok().body(obj);
+		return ResponseEntity.ok().build();
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+		
+		
 	}
 	
 }
-
+	
 
 
 
