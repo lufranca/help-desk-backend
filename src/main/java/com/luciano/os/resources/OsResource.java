@@ -8,9 +8,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.luciano.os.dtos.OsDTO;
 import com.luciano.os.services.OsService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/os")
 public class OsResource {
@@ -44,8 +47,14 @@ public class OsResource {
 		obj = new OsDTO(service.create(obj));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("{/id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build(); 
+		return ResponseEntity.created(uri).body(obj); 
 		
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<OsDTO> update(@PathVariable Integer id, @Valid @RequestBody OsDTO obj) {
+		obj = new OsDTO(service.update(id, obj));
+		return ResponseEntity.ok().body(obj);
 	}
 	
 }

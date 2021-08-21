@@ -1,5 +1,6 @@
 package com.luciano.os.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,25 +40,43 @@ public class OsService {
 		return repository.findAll();
 	}
 
-	public OS create(@Valid OsDTO obj) {
-		return fromDTO(obj);
+	public OS create(OsDTO obj) {
+		return repository.save(fromDTO(obj));
+	}
+	
+	public OS update(Integer id, @Valid OsDTO obj) {
+		obj.setId(id);
+		OS oldObj = findById(id);
+		oldObj = fromDTO(obj);
+		return repository.save(oldObj);
 	}
 	
 	private OS fromDTO(OsDTO obj) {
-		OS newObj = new OS();
-		newObj.setId(obj.getId());
-		newObj.setObservacoes(obj.getObservacoes());
-		newObj.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
-		newObj.setStatus(Status.toEnum(obj.getStatus()));
 		
 		Tecnico tec = tecnicoService.findById(obj.getTecnico());
 		Cliente cli = clienteService.findById(obj.getCliente());
 		
+		OS newObj = new OS();
+		
+		if(obj.getId() != null) {
+			newObj.setId(obj.getId());
+		}
+		
+		if(obj.getStatus().equals(2)) {
+			newObj.setDataFechamento(LocalDateTime.now());
+		}
+		
+		newObj.setId(obj.getId());
+		newObj.setObservacoes(obj.getObservacoes());
+		newObj.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
+		newObj.setStatus(Status.toEnum(obj.getStatus()));
 		newObj.setTecnico(tec);
 		newObj.setCliente(cli);
 		
-		return repository.save(newObj);
+		return newObj;
 	}
+
+
 
 }
 

@@ -28,7 +28,7 @@ public enum Status {
 
 		for (Status x : Status.values()) {
 
-			if (cod.equals(cod)) {
+			if(cod.equals(x.getCod())) {
 				return x;
 			}
 		}

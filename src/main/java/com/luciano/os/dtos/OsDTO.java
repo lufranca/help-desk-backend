@@ -105,5 +105,5 @@ public class OsDTO implements Serializable {
 	public void setCliente(Integer cliente) {
 		this.cliente = cliente;
 	}
-
+	
 }
